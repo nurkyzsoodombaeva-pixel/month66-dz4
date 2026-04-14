@@ -1,12 +1,12 @@
 import { useFiltersStore } from "../../store/use-filters";
 import { useCategories } from "../../hooks/use-categories";
-import "./filters.css";
+
 
 export function Filters() {
   const { search, setSearch, setCategoryId, resetFilters, categoryId } =
     useFiltersStore();
 
-  const { data: categories } = useCategories();
+  const {data} = useCategories()
 
   return (
     <div className="wrapper">
@@ -18,7 +18,7 @@ export function Filters() {
       />
 
       <div className="categories">
-        {categories?.map((item) => (
+        {data?.map((item) => (
           <button
             key={item.value}
             className={String(categoryId) === String(item.value) ? "active" : ""}

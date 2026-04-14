@@ -1,29 +1,21 @@
 import { Card, Tag, Typography, Button } from 'antd'
 import { Link } from 'react-router-dom'
+import { useCategories } from '../../store/category-store'
+import { useCartStore } from '../../store/cart-store'
 
-import { ShoppingCartOutlined } from '@ant-design/icons';
-import { useCategories } from '../../hooks/use-categories';
 
 const { Paragraph, Text, Title } = Typography
 export function ProductCard({ product }) {
-    const { data: categories} = useCategories()
-
-    const currentCategory = categories.find(
+   const {data} = useCategories()
+   const {addToBasket,addPending,products} = useCartStore()
+    const currentCategory = data?.find(
         (cat) => String(cat.value) === String(product.categorie_id)
     )
-
+   
+const isInCart = products?.some(
+  (item) => item.productId === product.id
+)
     const categoryName = currentCategory?.label || 'Без категории'
-
-    
-    
-    
- 
-    const handleAddToCart = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-
-        console.log(`Товар ${product.name} летит в корзину!`)
-    }
 
     return (
         <Link to={`/products/${product.id}`} className="product-card-link">
@@ -39,15 +31,7 @@ export function ProductCard({ product }) {
                         />
                     </div>
                 }
-                actions={[
-                    <Button 
-                        type="primary" 
-                        icon={<ShoppingCartOutlined />} 
-                        onClick={handleAddToCart}
-                    >
-                        В корзину
-                    </Button>
-                ]}
+               
             >
                 <Title level={5}>{product.name}</Title>
 
@@ -56,7 +40,10 @@ export function ProductCard({ product }) {
                 <div>
                     <Tag>{categoryName}</Tag>
                 </div>
-
+                <Button onClick={(e)=>{
+                    addToBasket(product)
+                    e.preventDefault()
+                    e.stopPropagation() }} disabled={addPending || isInCart}>Добавить в корзину</Button>
                 <Paragraph ellipsis={{ rows: 2 }}>
                     {product.description}
                 </Paragraph>

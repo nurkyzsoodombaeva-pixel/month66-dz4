@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/Header/header";
-export function App() {
+export function Layout() {
   return (
     <>
-       <Header />
+      <Header />
       <Outlet />
     </>
   );

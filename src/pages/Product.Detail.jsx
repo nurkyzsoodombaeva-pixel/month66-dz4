@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { getProductById } from "../api/axios";
 import { useQuery } from "@tanstack/react-query"; 
 import { Col, Row, Typography, Space, Spin, Button, Tag } from "antd";
+import { useCartStore } from "../store/cart-store";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -13,7 +13,10 @@ export function ProductDetail() {
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
   });
-
+const {products,addPending} = useCartStore()
+const isInCart = products?.some(
+  (item) => item.productId === product.id
+)
   if (isLoading) {
     return (
       <div className="page-product__loading">
@@ -63,7 +66,7 @@ export function ProductDetail() {
               {product.description}
             </Paragraph>
 
-            <Button type="primary" size="large" block className="page-product__add-btn">
+            <Button type="primary" size="large" block className="page-product__add-btn" disabled={isInCart || addPending}>
               Добавить в корзину
             </Button>
           </Space>
