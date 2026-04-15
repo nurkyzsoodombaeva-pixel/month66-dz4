@@ -6,6 +6,7 @@ import { Cart } from "../pages/cart";
 import { Orders } from "../pages/orders";
 import { ProductDetail } from "../pages/Product.Detail";
 import { Providers } from "./providers";
+import { Auth } from "../pages/auth";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
         path: "/orders",
         element: <Orders />,
       },
+      {
+        path: "/auth",
+        element: <Auth />,
+      }, 
     ],
   },
 ]);
